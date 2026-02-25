@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Mikrofonu Online - Sprawdź Swój Mikrofon | Gamer Tools</title>
+    <meta name="description" content="Darmowy test mikrofonu online. Sprawdź, czy Twój mikrofon działa poprawnie, nagraj dźwięk i odsłuchaj. Idealny dla graczy, streamerów i do pracy zdalnej.">
+    <meta name="keywords" content="test mikrofonu, sprawdź mikrofon, mic test, testowanie mikrofonu online, mikrofon dla graczy">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://narzedzia-graczy.github.io/poland/test-mikrofonu/">
+
+    <!-- Open Graph Tags -->
+    <meta property="og:title" content="Test Mikrofonu Online - Sprawdź Swój Mikrofon | Gamer Tools">
+    <meta property="og:description" content="Darmowy test mikrofonu online. Sprawdź działanie, nagraj próbkę głosu. Za darmo, bez instalacji.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://narzedzia-graczy.github.io/poland/test-mikrofonu/">
+
+    <!-- Schema Markup -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "Test Mikrofonu Online",
+      "url": "https://narzedzia-graczy.github.io/poland/test-mikrofonu/",
+      "applicationCategory": "UtilityApplication",
+      "operatingSystem": "All",
+      "description": "Darmowe narzędzie online do sprawdzania funkcjonalności mikrofonu i rejestrowania próbek audio."
+    }
+    </script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../assets/css/style.css">
+
+    <style>
+        .tool-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .visualizer-container {
+            width: 100%;
+            height: 200px;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            margin-bottom: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        #visualizer {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+
+        .controls {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-bottom: 2rem;
+        }
+
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--text-muted);
+        }
+
+        .status-dot.active {
+            background: var(--primary-color);
+            box-shadow: 0 0 10px var(--primary-color);
+            animation: pulse 1.5s infinite;
+        }
+
+        .status-dot.error {
+            background: #ff3366;
+            box-shadow: 0 0 10px #ff3366;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(0.95);
+                opacity: 0.8;
+            }
+
+            50% {
+                transform: scale(1.1);
+                opacity: 1;
+            }
+
+            100% {
+                transform: scale(0.95);
+                opacity: 0.8;
+            }
+        }
+
+        #audioPlayback {
+            width: 100%;
+            margin-top: 1.5rem;
+            border-radius: 30px;
+            background: var(--panel-bg);
+            display: none;
+        }
+
+        #audioPlayback.show {
+            display: block;
+        }
+
+        /* Audio element styling webkit */
+        audio::-webkit-media-controls-panel {
+            background-color: var(--panel-bg);
+        }
+
+        audio::-webkit-media-controls-play-button,
+        audio::-webkit-media-controls-mute-button {
+            background-color: var(--primary-color);
+            border-radius: 50%;
+        }
+
+        audio::-webkit-media-controls-current-time-display,
+        audio::-webkit-media-controls-time-remaining-display {
+            color: var(--text-main);
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <a href="../" class="logo">Gamer<span>Tools</span>.pl</a>
+        <nav class="nav-links">
+            <a href="/poland/test-mikrofonu" class="active">Test Mikrofonu</a>
+            <a href="/poland/czyszczenie-glosnika">Czyszczenie Głośnika</a>
+            <a href="/poland/kolo-fortuny">Koło Fortuny</a>
+        </nav>
+    </header>
+
+    <main>
+        <div class="tool-container text-center">
+            <h1 class="gradient-text mb-2">Test Mikrofonu Online</h1>
+            <p class="text-muted mb-4">Szybki i darmowy sposób na sprawdzenie, czy Twój mikrofon działa prawidłowo przed
+                grą lub streamem.</p>
+
+            <div class="glass-panel">
+                <div class="status-badge">
+                    <div class="status-dot" id="micStatusDot"></div>
+                    <span id="micStatusText">Oczekuje na start</span>
+                </div>
+
+                <div class="visualizer-container">
+                    <canvas id="visualizer"></canvas>
+                </div>
+
+                <div class="controls">
+                    <button class="btn btn-primary" id="btnStart">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
+                            <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+                            <line x1="12" y1="19" x2="12" y2="23"></line>
+                            <line x1="8" y1="23" x2="16" y2="23"></line>
+                        </svg>
+                        Rozpocznij Test
+                    </button>
+                    <button class="btn btn-secondary" id="btnStop" disabled>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                        </svg>
+                        Zatrzymaj i Odsłuchaj
+                    </button>
+                </div>
+
+                <audio id="audioPlayback" controls></audio>
+            </div>
+
+            <div style="margin-top: 3rem; text-align: left; background: rgba(0,0,0,0.2); padding: 2rem; border-radius: 12px; border: 1px solid var(--border-color);">
+                <h2 class="mb-2">Kompleksowy Test Mikrofonu Online</h2>
+                <p style="color: var(--text-muted); line-height: 1.6; margin-bottom: 1rem;">
+                    Niezawodna komunikacja to podstawa podczas rozgrywek wieloosobowych, streamowania oraz spotkań
+                    online. Nasz <strong>test mikrofonu online</strong> to darmowe narzędzie, które pozwala na szybkie i
+                    bezproblemowe <strong>sprawdzanie mikrofonu</strong> bezpośrednio z poziomu przeglądarki
+                    internetowej. Nie wymaga instalacji żadnego dodatkowego oprogramowania. Jeśli chcesz upewnić się, że
+                    Twoja drużyna lub widzowie będą Cię wyraźnie słyszeć, ten <strong>mic test</strong> dostarczy Ci
+                    wszystkich niezbędnych informacji.
+                </p>
+
+                <h3 class="mb-2" style="color: var(--primary-color); margin-top: 2rem;">Kluczowe funkcje narzędzia do
+                    testowania</h3>
+                <p style="color: var(--text-muted); line-height: 1.6; margin-bottom: 1rem;">
+                    Aplikacja oferuje zintegrowaną wizualizację fal dźwiękowych. Dzięki temu przeprowadzana
+                    <strong>kontrola głosu</strong> opiera się nie tylko na słuchu, ale również na danych wizualnych.
+                    Rejestrowanie dźwięku v czasie rzeczywistym pozwala wyłapać ewentualne opóźnienia, trzaski lub
+                    zakłócenia z otoczenia, które mogą wpływać na końcową jakość transmisji. Narzędzie zostało stworzone
+                    m.in po to, aby omijać potrzebę skomplikowanych weryfikacji sprzętowych w panelach systemowych.
+                </p>
+
+                <h3 class="mb-2" style="color: var(--primary-color); margin-top: 2rem;">Jak poprawnie przeprowadzić test
+                    mikrofonu?</h3>
+                <ul style="color: var(--text-muted); line-height: 1.6; padding-left: 1.5rem; margin-bottom: 1.5rem;">
+                    <li><strong>Zainicjowanie testu:</strong> Kliknij przycisk "Rozpocznij Test", znajdujący się głównej
+                        konsoli aplikacji.</li>
+                    <li><strong>Przyznanie uprawnień:</strong> Wyskakujące okno przeglądarki poprosi o dostęp do
+                        urządzenia nagrywającego. Należy zaakceptować ten komunikat, aby narzędzie mogło rozpocząć pracę
+                        i analizowanie Twojego strumienia <strong>nagrywanie audio</strong>.</li>
+                    <li><strong>Rejestracja i wizualizacja:</strong> Powiedz kilka zdań do mikrofonu używając swojego
+                        standardowego natężenia głosu. Dynamiczna, zielona fala na wielkim ekranie potwierdza, że
+                        <strong>sprawdzanie sprzętu</strong> przebiega prawidłowo i urządzenie sprawnie odbiera sygnał
+                        sprzętowy, weryfikując pełnowartościowy <strong>test mikrofonu</strong>.
+                    </li>
+                    <li><strong>Odtworzenie próbki:</strong> Po kilkusekundowej próbie kliknij "Zatrzymaj i Odsłuchaj",
+                        aby zamknąć połączenie i zakończyć rejestrację. System natychmiast wygeneruje odtwarzacz dźwięku
+                        pod wizualizatorem. Odsłuchaj dokładnie swoją wypowiedź, aby wiarygodnie ocenić głośność i
+                        czystość docelowego dźwięku.</li>
+                </ul>
+                <p style="color: var(--text-muted); line-height: 1.6;">
+                    Regularne korzystanie z tego prostego narzędzia webowego przed grą w trybie wieloosobowym lub
+                    rozpoczęciem nadawania na żywo oszczędzi Ci technicznych problemów. Posiadanie zweryfikowanego
+                    układu audio gwarantuje, że Twój sprzęt gamingowy funkcjonuje optymalnie bez opóźnień (latency).
+                </p>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 GamerTools.pl - Narzędzia dla graczy</p>
+    </footer>
+
+    <script>
+        const btnStart = document.getElementById('btnStart');
+        const btnStop = document.getElementById('btnStop');
+        const micStatusDot = document.getElementById('micStatusDot');
+        const micStatusText = document.getElementById('micStatusText');
+        const canvas = document.getElementById('visualizer');
+        const ctx = canvas.getContext('2d');
+        const audioPlayback = document.getElementById('audioPlayback');
+
+        let audioContext;
+        let analyser;
+        let microphone;
+        let stream;
+        let animationId;
+
+        let mediaRecorder;
+        let audioChunks = [];
+
+        function initCanvas() {
+            canvas.width = canvas.parentElement.clientWidth;
+            canvas.height = canvas.parentElement.clientHeight;
+            drawIdleLine();
+        }
+
+        window.addEventListener('resize', initCanvas);
+        // Initial setup
+        setTimeout(initCanvas, 100);
+
+        function drawIdleLine() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.beginPath();
+            ctx.moveTo(0, canvas.height / 2);
+            ctx.lineTo(canvas.width, canvas.height / 2);
+            ctx.strokeStyle = '#a0a5b5';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+        }
+
+        async function startMic() {
+            audioPlayback.classList.remove('show');
+            try {
+                stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                analyser = audioContext.createAnalyser();
+                analyser.fftSize = 2048;
+
+                microphone = audioContext.createMediaStreamSource(stream);
+                microphone.connect(analyser);
+
+                micStatusDot.className = 'status-dot active';
+                micStatusText.textContent = 'Trwa nagrywanie... Mów!';
+                btnStart.disabled = true;
+                btnStop.disabled = false;
+
+                // Set up recorder
+                mediaRecorder = new MediaRecorder(stream);
+                mediaRecorder.ondataavailable = event => {
+                    audioChunks.push(event.data);
+                };
+                mediaRecorder.onstop = () => {
+                    const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+                    const audioUrl = URL.createObjectURL(audioBlob);
+                    audioPlayback.src = audioUrl;
+                    audioPlayback.classList.add('show');
+                };
+
+                audioChunks = [];
+                mediaRecorder.start();
+
+                drawVisualizer();
+            } catch (err) {
+                console.error('Błąd dostępu do mikrofonu:', err);
+                micStatusDot.className = 'status-dot error';
+                micStatusText.textContent = 'Brak dostępu do mikrofonu! Sprawdź uprawnienia.';
+            }
+        }
+
+        function stopMic() {
+            if (stream) {
+                stream.getTracks().forEach(track => track.stop());
+            }
+            if (audioContext) {
+                audioContext.close();
+            }
+            if (animationId) {
+                cancelAnimationFrame(animationId);
+            }
+            if (mediaRecorder && mediaRecorder.state !== 'inactive') {
+                mediaRecorder.stop();
+            }
+
+            micStatusDot.className = 'status-dot';
+            micStatusText.textContent = 'Nagrywanie zakończone. Odsłuchaj poniżej.';
+            btnStart.disabled = false;
+            btnStop.disabled = true;
+
+            drawIdleLine();
+        }
+
+        function drawVisualizer() {
+            if (!analyser) return;
+
+            const bufferLength = analyser.frequencyBinCount;
+            const dataArray = new Uint8Array(bufferLength);
+
+            analyser.getByteTimeDomainData(dataArray);
+
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.2)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            ctx.lineWidth = 3;
+            ctx.strokeStyle = '#00ff88'; // Primary color
+
+            ctx.beginPath();
+
+            const sliceWidth = canvas.width * 1.0 / bufferLength;
+            let x = 0;
+
+            for (let i = 0; i < bufferLength; i++) {
+                const v = dataArray[i] / 128.0;
+                const y = v * canvas.height / 2;
+
+                if (i === 0) {
+                    ctx.moveTo(x, y);
+                } else {
+                    ctx.lineTo(x, y);
+                }
+
+                x += sliceWidth;
+            }
+
+            ctx.lineTo(canvas.width, canvas.height / 2);
+            ctx.stroke();
+
+            // Add glow effect
+            ctx.shadowBlur = 15;
+            ctx.shadowColor = '#00ff88';
+            ctx.stroke();
+            ctx.shadowBlur = 0;
+
+            animationId = requestAnimationFrame(drawVisualizer);
+        }
+
+        btnStart.addEventListener('click', startMic);
+        btnStop.addEventListener('click', stopMic);
+    </script>
+</body>
+</html>
