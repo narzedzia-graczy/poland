@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GamerTools.pl - Najlepsze Narzędzia dla Graczy i Streamerów</title>
+    <meta name="description" content="Kolekcja darmowych narzędzi dla graczy. Przetestuj mikrofon online, wyczyść głośnik z wody i kurzu, stwórz własne koło fortuny.">
+    <meta name="keywords" content="narzędzia dla graczy, test mikrofonu, czyszczenie głośnika, koło fortuny, web tools">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://narzedzia-graczy.github.io/poland/">
+
+    <!-- Open Graph Tags -->
+    <meta property="og:title" content="GamerTools.pl - Najlepsze Narzędzia dla Graczy i Streamerów">
+    <meta property="og:description" content="Kolekcja darmowych narzędzi dla graczy. Przetestuj mikrofon, wyczyść głośnik z wody i kurzu, stwórz własne koło fortuny.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://narzedzia-graczy.github.io/poland/">
+
+    <!-- Schema Markup -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "GamerTools.pl",
+      "url": "https://narzedzia-graczy.github.io/poland/",
+      "description": "Kolekcja darmowych narzędzi dla graczy online"
+    }
+    </script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <style>
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .tool-card {
+            background: var(--panel-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 3rem 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tool-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at center, rgba(0, 255, 136, 0.1), transparent 70%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .tool-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--glass-shadow), var(--neon-glow);
+            border-color: var(--primary-color);
+        }
+
+        .tool-card:hover::before {
+            opacity: 1;
+        }
+
+        .tool-icon {
+            font-size: 4rem;
+            z-index: 1;
+        }
+
+        .tool-title {
+            color: var(--text-main);
+            font-size: 1.5rem;
+            font-weight: 700;
+            z-index: 1;
+        }
+
+        .tool-desc {
+            color: var(--text-muted);
+            font-size: 1rem;
+            line-height: 1.5;
+            z-index: 1;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <a href="/" class="logo">Gamer<span>Tools</span>.pl</a>
+    </header>
+
+    <main>
+        <div class="text-center" style="margin-top: 2rem; margin-bottom: 4rem;">
+            <h1 class="gradient-text mb-3" style="font-size: 3.5rem;">Zestaw Narzędzi Premium</h1>
+            <p class="text-muted" style="font-size: 1.25rem; max-width: 600px; margin: 0 auto;">
+                Darmowe narzędzia online zaprojektowane z myślą o profesjonalnych graczach, streamerach i twórcach
+                audio.
+            </p>
+        </div>
+
+        <div class="tools-grid">
+            <a href="test-mikrofonu/" class="tool-card">
+                <div class="tool-icon">🎙️</div>
+                <div class="tool-title">Test Mikrofonu</div>
+                <div class="tool-desc">Szybko sprawdź jakość dźwięku, nagraj próbkę i upewnij się, że Twój mikrofon
+                    działa idealnie przed streamem.</div>
+            </a>
+            <a href="czyszczenie-glosnika/" class="tool-card" style="border-color: var(--secondary-color);">
+                <div class="tool-icon">🔊</div>
+                <div class="tool-title">Czyszczenie Głośnika</div>
+                <div class="tool-desc">Wyrzuć wodę i kurz ze swoich głośników za pomocą precyzyjnych częstotliwości
+                    dźwiękowych (np. 165Hz).</div>
+            </a>
+            <a href="kolo-fortuny/" class="tool-card" style="border-color: #ffaa00;">
+                <div class="tool-icon">🎡</div>
+                <div class="tool-title">Koło Fortuny</div>
+                <div class="tool-desc">Stwórz własne koło losowania! Idealne do giveaway'ów na Twitchu lub wyboru
+                    kolejnej gry na stream.</div>
+            </a>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 GamerTools.pl - Najlepsze Narzędzia dla Graczy. Wszelkie prawa zastrzeżone.</p>
+    </footer>
+</body>
+</html>
