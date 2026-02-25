@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Czyszczenie Głośnika z Wody i Kurzu - Fix My Speaker | Gamer Tools</title>
+    <meta name="description" content="Darmowe narzędzie do czyszczenia głośnika z wody i kurzu. Wykorzystaj specjalne częstotliwości (np. 165Hz), aby odblokować głośnik w telefonie lub słuchawkach.">
+    <meta name="keywords" content="czyszczenie głośnika, usuń wodę z głośnika, czyszczenie kurzu głośnik, fix my speaker, 165hz dźwięk">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://narzedzia-graczy.github.io/poland/czyszczenie-glosnika/">
+
+    <!-- Open Graph Tags -->
+    <meta property="og:title" content="Czyszczenie Głośnika z Wody i Kurzu - Fix My Speaker | Gamer Tools">
+    <meta property="og:description" content="Zalany telefon? Użyj naszego darmowego narzędzia webowego 165Hz, aby wypchnąć wodę i usunąć kurz z głośnika.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://narzedzia-graczy.github.io/poland/czyszczenie-glosnika/">
+
+    <!-- Schema Markup -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "Czyszczenie Głośnika",
+      "url": "https://narzedzia-graczy.github.io/poland/czyszczenie-glosnika/",
+      "applicationCategory": "UtilityApplication",
+      "operatingSystem": "All",
+      "description": "Narzędzie audio emitujące fale 165Hz, zaprojektowane do usuwania wody i kurzu z głośników smartfonów i laptopów."
+    }
+    </script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../assets/css/style.css">
+
+    <style>
+        .tool-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .speaker-mockup {
+            width: 200px;
+            height: 200px;
+            margin: 0 auto 2rem;
+            background: radial-gradient(circle at center, #1a1c29 0%, #0d0e15 100%);
+            border: 4px solid var(--border-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.8);
+            transition: all 0.1s ease;
+        }
+
+        .speaker-cone {
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(145deg, #222533, #151722);
+            border-radius: 50%;
+            border: 2px solid #333;
+            box-shadow: inset 0 0 10px #000;
+        }
+
+        .speaker-center {
+            width: 60px;
+            height: 60px;
+            background: radial-gradient(circle at 40% 40%, #333, #111);
+            border-radius: 50%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border: 2px solid #444;
+            box-shadow: inset 0 0 8px rgba(0, 255, 136, 0.15), 0 0 6px rgba(0, 0, 0, 0.6);
+        }
+
+        /* Animation classes */
+        .vibrate-water {
+            animation: shakeWater 0.05s linear infinite;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 30px rgba(0, 255, 136, 0.4);
+        }
+
+        .vibrate-dust {
+            animation: shakeDust 0.02s linear infinite;
+            border-color: var(--secondary-color);
+            box-shadow: 0 0 30px rgba(181, 0, 255, 0.4);
+        }
+
+        @keyframes shakeWater {
+            0% { transform: translate(1px, 1px) rotate(0deg); }
+            10% { transform: translate(-1px, -2px) rotate(-1deg); }
+            20% { transform: translate(-3px, 0px) rotate(1deg); }
+            30% { transform: translate(3px, 2px) rotate(0deg); }
+            40% { transform: translate(1px, -1px) rotate(1deg); }
+            50% { transform: translate(-1px, 2px) rotate(-1deg); }
+            60% { transform: translate(-3px, 1px) rotate(0deg); }
+            70% { transform: translate(3px, 1px) rotate(-1deg); }
+            80% { transform: translate(-1px, -1px) rotate(1deg); }
+            90% { transform: translate(1px, 2px) rotate(0deg); }
+            100% { transform: translate(1px, -2px) rotate(-1deg); }
+        }
+
+        @keyframes shakeDust {
+            0% { transform: translate(0.5px, 0.5px); }
+            50% { transform: translate(-0.5px, -0.5px); }
+            100% { transform: translate(0.5px, 0.5px); }
+        }
+
+        .controls {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        @media (max-width: 600px) {
+            .controls {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .stop-btn {
+            width: 100%;
+            background: #ff3366 !important;
+            color: white !important;
+            box-shadow: 0 0 15px rgba(255, 51, 102, 0.5) !important;
+            display: none;
+        }
+
+        .stop-btn.show {
+            display: inline-flex;
+        }
+
+        .freq-display {
+            font-size: 1.5rem;
+            font-family: monospace;
+            color: var(--primary-color);
+            background: rgba(0, 0, 0, 0.3);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            display: inline-block;
+            margin-bottom: 2rem;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <a href="../" class="logo">Gamer<span>Tools</span>.pl</a>
+        <nav class="nav-links">
+            <a href="/poland/test-mikrofonu">Test Mikrofonu</a>
+            <a href="/poland/czyszczenie-glosnika" class="active">Czyszczenie Głośnika</a>
+            <a href="/poland/kolo-fortuny">Koło Fortuny</a>
+        </nav>
+    </header>
+
+    <main>
+        <div class="tool-container text-center">
+            <h1 class="gradient-text mb-2">Czyszczenie Głośnika online</h1>
+            <p class="text-muted mb-4">Wpadł Ci telefon do wody? Głośnik trzeszczy przez kurz? Użyj specjalnych
+                częstotliwości radiowych, aby udrożnić siatkę głośnika w telefonie, słuchawkach lub laptopie.</p>
+
+            <div class="glass-panel">
+                <div class="speaker-mockup" id="speakerIcon">
+                    <div class="speaker-cone"></div>
+                    <div class="speaker-center"></div>
+                </div>
+
+                <div class="freq-display" id="freqDisplay">Status: Gotowy</div>
+
+                <div class="controls" id="actionControls">
+                    <button class="btn btn-primary" id="btnWater" style="height: 60px;">
+                        💧 Wypchnij Wodę (165 Hz)
+                    </button>
+                    <button class="btn btn-secondary" id="btnDust" style="height: 60px;">
+                        💨 Wydmuchaj Kurz (Wysokie)
+                    </button>
+                </div>
+
+                <button class="btn stop-btn" id="btnStop" style="height: 60px;">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                    </svg>
+                    ZATRZYMAJ DŹWIĘK
+                </button>
+            </div>
+
+            <div style="margin-top: 3rem; text-align: left; background: rgba(0,0,0,0.2); padding: 2rem; border-radius: 12px; border: 1px solid var(--border-color);">
+                <h2 class="mb-2">Skuteczne Czyszczenie Głośnika z Wody i Kurzu</h2>
+                <p style="color: var(--text-muted); line-height: 1.6; margin-bottom: 1rem;">
+                    Zalanie smartfona lub nagromadzenie brudu to częsty powód zniekształceń dźwięku. Aplikacja webowa
+                    <strong>czyszczenie głośnika</strong> to bezpieczna alternatywa dla ryzykownych metod mechanicznych.
+                    Wykorzystując właściwości fal dźwiękowych, narzędzie generuje specyficzne wibracje. Technika ta jest
+                    skutecznie wykorzystywana m.in. jako <strong>czyszczenie głośnika iphone</strong>,
+                    <strong>czyszczenie głośnika samsung</strong> oraz <strong>czyszczenie głośnika xiaomi</strong>,
+                    pozwalając na nieinwazyjną próbę naprawy komponentów audio w urządzeniach mobilnych i laptopach.
+                </p>
+
+                <h3 class="mb-2" style="color: var(--primary-color); margin-top: 2rem;">Jak działa akustyczne usuwanie
+                    zanieczyszczeń?</h3>
+                <p style="color: var(--text-muted); line-height: 1.6; margin-bottom: 1rem;">
+                    Mechanizm opiera się na dwóch różnych profilach dziękowych. Niska częstotliwość (165 Hz) powoduje
+                    intensywne oscylacje membrany. To zjawisko fizyczne jest odpowiedzialne za <strong>usuwanie
+                        wody</strong> z mikroszczelin siatki ochronnej. Z kolei generator wysokotonowy emituje zmienne
+                    częstotliwości, sprzyjając mikrowibracjom, co umożliwia skuteczne <strong>wyrzucanie kurzu</strong>
+                    i drobinek piasku. Celem tych procesów jest kompleksowa <strong>naprawa dźwięku</strong> i
+                    odzyskanie fabrycznej głośności komórki.
+                </p>
+
+                <h3 class="mb-2" style="color: var(--primary-color); margin-top: 2rem;">Instrukcja użytkowania
+                    generatora dźwięku</h3>
+                <ul style="color: var(--text-muted); line-height: 1.6; padding-left: 1.5rem; margin-bottom: 1.5rem;">
+                    <li><strong>Przygotowanie urządzenia:</strong> Odłącz słuchawki bluetooth lub kable audio. Ustaw
+                        głośność multimediów na maksymalny poziom (100%). Jest to kluczowe dla uzyskania odpowiedniej
+                        siły uderzeniowej membrany.</li>
+                    <li><strong>Pozycja telefonu:</strong> Ułóż urządzenie w taki sposób, aby główne głośniki były
+                        skierowane w dół – grawitacja wspomoże proces usuwania płynów i brudu.</li>
+                    <li><strong>Procedura "Wypchnij Wodę":</strong> Aktywuj ten tryb (emitujący stały, niski dźwięk) v
+                        przypadku zalania. Zostaw urządzenie na kilka minut na suchej chusteczce higienicznej, która
+                        zaabsorbuje wyrzucone kropelki.</li>
+                    <li><strong>Procedura "Wydmuchaj Kurz":</strong> Użyj tej funkcji, gdy dźwięk jest przytłumiony z
+                        powodu codziennego użytkowania. Wysokie dżwięki pomogą udrożnić kanał audio.</li>
+                </ul>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 GamerTools.pl - Narzędzia dla graczy</p>
+    </footer>
+
+    <script>
+        const btnWater = document.getElementById('btnWater');
+        const btnDust = document.getElementById('btnDust');
+        const btnStop = document.getElementById('btnStop');
+        const speakerIcon = document.getElementById('speakerIcon');
+        const freqDisplay = document.getElementById('freqDisplay');
+        const actionControls = document.getElementById('actionControls');
+
+        let audioCtx;
+        let oscillator;
+        let gainNode;
+        let activeInterval;
+
+        function initAudio() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+        }
+
+        function playTone(type) {
+            initAudio();
+            stopTone();
+
+            actionControls.style.display = 'none';
+            btnStop.classList.add('show');
+
+            oscillator = audioCtx.createOscillator();
+            gainNode = audioCtx.createGain();
+
+            oscillator.connect(gainNode);
+            gainNode.connect(audioCtx.destination);
+
+            if (type === 'water') {
+                oscillator.type = 'sine';
+                oscillator.frequency.value = 165;
+                speakerIcon.className = 'speaker-mockup vibrate-water';
+                freqDisplay.textContent = 'Głośność na MAX! (Odtwarzanie 165Hz)';
+                freqDisplay.style.color = 'var(--primary-color)';
+            } else if (type === 'dust') {
+                oscillator.type = 'square';
+                let freq = 800;
+
+                activeInterval = setInterval(() => {
+                    freq = freq > 1000 ? 500 : freq + 100;
+                    if (oscillator) {
+                        oscillator.frequency.setValueAtTime(freq, audioCtx.currentTime);
+                    }
+                }, 100);
+
+                speakerIcon.className = 'speaker-mockup vibrate-dust';
+                freqDisplay.textContent = 'Trwa wydmuchiwanie kurzu...';
+                freqDisplay.style.color = 'var(--secondary-color)';
+            }
+
+            oscillator.start();
+        }
+
+        function stopTone() {
+            if (oscillator) {
+                oscillator.stop();
+                oscillator.disconnect();
+                oscillator = null;
+            }
+            if (activeInterval) {
+                clearInterval(activeInterval);
+            }
+            if (audioCtx) {
+                audioCtx.suspend();
+                setTimeout(() => audioCtx.resume(), 50);
+            }
+
+            speakerIcon.className = 'speaker-mockup';
+            freqDisplay.textContent = 'Status: Gotowy';
+            freqDisplay.style.color = 'var(--text-muted)';
+
+            actionControls.style.display = 'grid';
+            btnStop.classList.remove('show');
+        }
+
+        btnWater.addEventListener('click', () => playTone('water'));
+        btnDust.addEventListener('click', () => playTone('dust'));
+        btnStop.addEventListener('click', stopTone);
+    </script>
+</body>
+</html>
